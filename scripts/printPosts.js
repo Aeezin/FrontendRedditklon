@@ -29,7 +29,7 @@ function printPosts() {
         postElement.innerHTML = `
             <h2>${slicedTitle}</h2>
             <div class="post-body">${slicedBody}</div>
-            ${tags ? `<small>Tags: ${tags}</small>` : ''}
+            <small>Tags: ${tags}</small>
             <small>User: ${username}</small>
             <button class="read-more-btn">Read More</button>
         `;

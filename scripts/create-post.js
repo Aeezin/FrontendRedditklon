@@ -130,8 +130,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        const postLenght = JSON.parse(localStorage.getItem('posts')) || [];
+
         const newPost = {
-            id: Date.now(),
+            id: postLenght.length + 1,
             title: title,
             body: body,
             userId: userId,
@@ -146,6 +148,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
             posts.unshift(newPost);
             localStorage.setItem('posts', JSON.stringify(posts));
+            console.log('New post:', newPost);
+            console.log('Posts:', posts);
+
 
             event.target.reset();
             selectedTags = [];
