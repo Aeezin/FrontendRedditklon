@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedditHub - Create Post</title>
+    <link rel="stylesheet" href="styles/boarder.css">
+    <link rel="stylesheet" href="styles/create-post.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="scripts/playsound.js" defer></script>
+    <script src="scripts/togglemenu.js" defer></script>
+    <script src="scripts/create-post.js" defer></script>
+</head>
+
+<body>
+    <div id="menu" class="menu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+        </ul>
+    </div>
+    <audio id="submit-audio">
+        <source src="utilitys/audio.mp3" type="audio/mpeg">
+    </audio>
+    <header>
+        <div class="top-section">
+            <button class="bi bi-list" onclick="toggleMenu()"></button>
+            <a href="index.html">
+                <img src="utilitys/RHub-wink.png" alt="RedditHub Logo">
+            </a>
+            <div class="search-bar">
+                <input type="Search RedditHub" placeholder="Search RedditHub" id="search">
+                <button class="bi bi-search"></button>
+            </div>
+            <button class="bi bi-play-btn-fill"></button>
+            <button class="bi bi-camera-fill"></button>
+            <button class="bi bi-person-circle"></button>
+        </div>
+    </header>
+    <div id="create-post-container">
+        <h1>Create a New Post</h1>
+        <form id="new-post-form">
+            <label for="post-title">Title:</label>
+            <input type="text" id="post-title" name="title" required><br>
+
+            <label for="post-body">Content:</label>
+            <textarea id="post-body" name="body" required></textarea><br>
+
+            <label for="post-users">User:</label>
+            <select id="post-users" name="users" required></select><br>
+
+            <label>Tags:</label>
+            <div id="tag-selection">
+                <select id="post-tags">
+                    <option value="">Select a tag</option>
+                    <option value="technology">Technology</option>
+                    <option value="science">Science</option>
+                    <option value="art">Art</option>
+                    <option value="music">Music</option>
+                    <option value="gaming">Gaming</option>
+                    <option value="movies">Movies</option>
+                </select>
+                <button type="button" id="add-tag-btn">+</button>
+            </div>
+            <div id="selected-tags"></div>
+            <br>
+
+            <button type="submit" id="submit-btn" name="submit">Submit</button>
+            <br>
+        </form>
+        <div id="post-preview">
+            <h2>Post Preview</h2>
+            <h3 id="preview-title">Your title will appear here</h3>
+            <p id="preview-body">Your content will appear here</p>
+            <p id="preview-user">- User</p>
+            <p id="preview-tags">- Tags</p>
+        </div>
+    </div>
+</body>
+
+</html>

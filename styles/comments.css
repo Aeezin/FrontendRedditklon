@@ -1,0 +1,347 @@
+/* Comments Container */
+#comments-container {
+    color: orange;
+    margin-top: 2rem;
+    padding: 2rem;
+    position: relative;
+    width: 90%;
+    max-width: 70rem;
+    margin: 30px auto;
+    background-color: rgb(37, 37, 37);
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease-out;
+    overflow: hidden;
+}
+
+#comments-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: .1rem;
+    background: linear-gradient(90deg, transparent, orange, transparent);
+    animation: loading 3s linear infinite;
+}
+
+/* Comment animation */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading animation */
+@keyframes loading {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* Comment Header */
+#post-title {
+    font-size: 1.8rem;
+    color: orange;
+    text-align: center;
+    position: relative;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 15px rgba(255, 165, 0, 0.3);
+}
+
+#comments-container select {
+    width: 10rem;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid rgb(47, 47, 47);
+    background-color: rgb(14, 14, 14);
+    color: orange;
+    appearance: none;
+    /* Remove default browser styling */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#comments-container select:focus {
+    outline: none;
+    border-color: orange;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Custom dropdown arrow */
+#comments-container select {
+    background-image: linear-gradient(45deg, transparent 50%, orange 50%),
+        linear-gradient(135deg, orange 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1em + 2px),
+        calc(100% - 15px) calc(1em + 2px),
+        calc(100% - 2.5em) 0.5em;
+    background-size: 5px 5px,
+        5px 5px,
+        1px 1.5em;
+    background-repeat: no-repeat;
+}
+
+/* Styling for dropdown options */
+#comments-container select option {
+    background-color: rgb(14, 14, 14);
+    color: orange;
+    border: none;
+}
+
+#comments-container select option:checked {
+    background-color: rgba(255, 165, 0, 0.2);
+}
+
+#comments-container select option:hover {
+    background-color: rgba(255, 165, 0, 0.1);
+}
+
+#post-content {
+    font-size: 1.5rem;
+    color: orange;
+}
+
+#post-tags {
+    color: orange;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: flex;
+}
+
+/* Comment Item Styling */
+#comments-list .comment {
+    background-color: rgb(47, 47, 47);
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.2);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover effect on comments */
+#comments-list .comment:hover {
+    background-color: rgb(53, 53, 53);
+    transform: translateX(5px);
+}
+
+/* Comment User Styling */
+.comment-user {
+    font-weight: bold;
+    color: orange;
+    font-size: 1.1rem;
+}
+
+/* Comment Body Styling */
+.comment-body {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: orange;
+    opacity: 0.9;
+    margin-top: 0.8rem;
+}
+
+/* Comment Button */
+#submit-comment {
+    background-color: transparent;
+    color: orange;
+    border: 2px solid orange;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover effect on button */
+#submit-comment::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: orange;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+#submit-comment:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+#submit-comment:hover {
+    color: rgb(14, 14, 14);
+    transform: translateY(-3px);
+}
+
+/* Comment input area */
+#new-comment-form {
+    background-color: rgb(37, 37, 37);
+    color: orange;
+    padding: 1rem;
+    border-radius: .8rem;
+    width: 100%;
+    max-width: 68rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    margin-top: 2rem;
+}
+
+#new-comment-form label {
+    display: flex;
+    margin-bottom: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+#new-comment-form option {
+    color: orange;
+    background-color: rgb(14, 14, 14);
+}
+
+#new-comment-form input,
+#new-comment-form textarea {
+    width: 66.3rem;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid rgb(47, 47, 47);
+    background-color: rgb(14, 14, 14);
+    color: orange;
+    resize: none;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+#new-comment-form input:focus,
+#new-comment-form textarea:focus {
+    outline: none;
+    border-color: orange;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+#new-comment-form button {
+    background-color: transparent;
+    color: orange;
+    border: 2px solid orange;
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#new-comment-form button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: orange;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+#new-comment-form button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+#new-comment-form button:hover {
+    color: rgb(14, 14, 14);
+    transform: translateY(-3px);
+}
+
+/* Like and Dislike Buttons Styling */
+#reaction-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+#reaction-buttons button {
+    background-color: transparent;
+    color: orange;
+    border: 2px solid orange;
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+    border-radius: 8px;
+    margin: 0 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#reaction-buttons button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: orange;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+#reaction-buttons button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+#reaction-buttons button:hover {
+    color: rgb(14, 14, 14);
+    transform: translateY(-3px);
+}
+
+/* Scrollbar Track (background) */
+::-webkit-scrollbar {
+    width: .4rem;
+}
+
+::-webkit-scrollbar-track {
+    background: linear-gradient(to bottom, black, rgb(10, 10, 10));
+}
+
+/* Scrollbar Thumb (foreground) */
+::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    border: 3px solid orange;
+}
+
+/* Firefox Scrollbar */
+/* html {
+    scrollbar-width: thin;
+    scrollbar-color: black orange;
+} */

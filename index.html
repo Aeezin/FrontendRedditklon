@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RedditHub - Dive into anything</title>
+  <link rel="stylesheet" type="text/css" href="styles/boarder.css">
+  <link rel="stylesheet" type="text/css" href="styles/posts.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="scripts/fetch.js" defer></script>
+  <script src="scripts/printPosts.js" defer></script>
+  <script src="scripts/toggleMenu.js" defer></script>
+</head>
+
+<body>
+  <audio id="submit-audio">
+    <source src="utilitys/audio.mp3" type="audio/mpeg">
+  </audio>
+
+  <header>
+    <div class="top-section">
+      <button class="bi bi-list" onclick="toggleMenu()"></button>
+      <a href="index.html">
+        <img src="utilitys/RHub-wink.png" alt="RedditHub Logo">
+      </a>
+      <div class="search-bar">
+        <input type="Search RedditHub" placeholder="Search RedditHub" id="search">
+        <button class="bi bi-search"></button>
+      </div>
+      <button class="bi bi-play-btn-fill"></button>
+      <button class="bi bi-camera-fill"></button>
+      <button class="bi bi-person-circle"></button>
+    </div>
+  </header>
+
+  <div id="menu" class="menu">
+    <ul>
+      <li><a href="create-post.html">Create Post</a></li>
+    </ul>
+  </div>
+  <div id="posts-container"></div>
+</body>
+
+</html>

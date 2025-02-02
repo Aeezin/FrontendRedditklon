@@ -1,0 +1,415 @@
+/* Create Post Container */
+#create-post-container h1 {
+    color: orange;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    text-shadow: 0 0 15px rgba(255, 165, 0, 0.3);
+}
+
+#create-post-container h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: orange;
+    border-radius: 2px;
+    animation: glow 2s infinite;
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(255, 165, 0, 0.8);
+    }
+}
+
+/* Form Styling */
+#new-post-form {
+    background-color: rgb(37, 37, 37);
+    color: orange;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    width: 38rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+#new-post-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, orange, transparent);
+    animation: loading 3s linear infinite;
+}
+
+@keyframes loading {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+#new-post-form label {
+    display: flex;
+    margin-bottom: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+#new-post-form input,
+#new-post-form textarea {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid rgb(47, 47, 47);
+    background-color: rgb(14, 14, 14);
+    color: orange;
+    resize: none;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+#new-post-form input:focus,
+#new-post-form textarea:focus {
+    outline: none;
+    border-color: orange;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* General Button Styles */
+.btn {
+    background-color: transparent;
+    color: orange;
+    border: 2px solid orange;
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: orange;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn:hover {
+    color: rgb(14, 14, 14);
+    transform: translateY(-3px);
+}
+
+/* Add Tag Button */
+#add-tag-btn {
+    background-color: transparent;
+    color: orange;
+    border: 1px solid orange;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+#add-tag-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: orange;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+#add-tag-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+#add-tag-btn:hover {
+    background-color: orange;
+    color: rgb(14, 14, 14);
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Submit Button */
+#submit-btn {
+    background-color: transparent;
+    color: orange;
+    border: 2px solid orange;
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: orange;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+#submit-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+#submit-btn:hover {
+    color: rgb(14, 14, 14);
+    transform: translateY(-3px);
+}
+
+/* Preview Section */
+#post-preview {
+    background-color: rgb(14, 14, 14);
+    color: orange;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin: 3rem auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 38rem;
+    position: relative;
+    border: 1px solid rgba(255, 165, 0, 0.1);
+}
+
+#post-preview::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 15px;
+    background: linear-gradient(45deg, transparent, rgba(255, 165, 0, 0.1), transparent);
+    z-index: -1;
+    animation: borderGlow 3s linear infinite;
+}
+
+@keyframes borderGlow {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+#preview-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+}
+
+#preview-body {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+#preview-user {
+    font-size: 1rem;
+    font-style: italic;
+    opacity: 0.8;
+    position: relative;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    background-color: rgba(255, 165, 0, 0.1);
+}
+
+/* Create Post User Selection Styling */
+#new-post-form select {
+    width: 10rem;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid rgb(47, 47, 47);
+    background-color: rgb(14, 14, 14);
+    color: orange;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#new-post-form select:focus {
+    outline: none;
+    border-color: orange;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Custom Dropdown Arrow */
+#new-post-form select {
+    background-image: linear-gradient(45deg, transparent 50%, orange 50%),
+        linear-gradient(135deg, orange 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1em + 2px),
+        calc(100% - 15px) calc(1em + 2px),
+        calc(100% - 2.5em) 0.5em;
+    background-size: 5px 5px,
+        5px 5px,
+        1px 1.5em;
+    background-repeat: no-repeat;
+}
+
+/* Styling for Dropdown Options */
+#new-post-form select option {
+    background-color: rgb(14, 14, 14);
+    color: orange;
+    border: none;
+}
+
+#new-post-form select option:checked {
+    background-color: rgba(255, 165, 0, 0.2);
+}
+
+#new-post-form select option:hover {
+    background-color: rgba(255, 165, 0, 0.1);
+}
+
+/* Tags Dropdown Styling */
+#tag-selection {
+    /* display: flex; */
+    /* gap: 1rem; */
+    align-items: center;
+}
+
+#post-tags {
+    flex: 1;
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid rgb(47, 47, 47);
+    background-color: rgb(14, 14, 14);
+    color: orange;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#post-tags:focus {
+    outline: none;
+    border-color: orange;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+#post-tags option {
+    background-color: rgb(14, 14, 14);
+    color: orange;
+    border: none;
+}
+
+#post-tags option:checked {
+    background-color: rgba(255, 165, 0, 0.2);
+}
+
+#post-tags option:hover {
+    background-color: rgba(255, 165, 0, 0.1);
+}
+
+/* Selected Tags Styling */
+.tag {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.remove-tag-btn {
+    background: none;
+    border: none;
+    color: orange;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.remove-tag-btn:hover {
+    color: red;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 0.4rem;
+}
+
+::-webkit-scrollbar-track {
+    background: linear-gradient(to bottom, black, rgb(10, 10, 10));
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    border: 3px solid orange;
+}
+
+/* Firefox Scrollbar */
+/* html {
+    scrollbar-width: thin;
+    scrollbar-color: black orange;
+} */
