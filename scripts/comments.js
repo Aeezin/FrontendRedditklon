@@ -32,17 +32,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        // If post not in localStorage, fetch from API
-        if (!postData) {
-            const postResponse = await fetch(`https://dummyjson.com/posts/${postId}`);
-            if (!postResponse.ok) throw new Error('Post not found in API');
-            postData = await postResponse.json();
-
-            // Save to localStorage
-            posts.push(postData);
-            localStorage.setItem('posts', JSON.stringify(posts));
-        }
-
         // Display post data
         document.getElementById('post-title').textContent = postData.title || `Post #${postId}`;
         document.getElementById('post-content').textContent = postData.body;
@@ -53,7 +42,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Only initialize from API if no local reactions exist
         if (postReactions.likes === 0 && postReactions.dislikes === 0) {
-            // For API posts (they have reactions object with likes and dislikes)
             if (postData.reactions && typeof postData.reactions === 'object') {
                 postReactions.likes = postData.reactions.likes || 0;
                 postReactions.dislikes = postData.reactions.dislikes || 0;
@@ -77,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Fetch users for comment dropdown
         let users = [];
         try {
-            const usersResponse = await fetch('https://dummyjson.com/users');
+            const usersResponse = await fetch('https://dummyjson.com/users?limit=0&select=firstName,lastName');
             if (usersResponse.ok) {
                 const usersData = await usersResponse.json();
                 users = usersData.users || [];
@@ -117,8 +105,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const commentItem = document.createElement('li');
             commentItem.classList.add('comment');
             commentItem.innerHTML = `
-                <div class="comment-user">${comment.user?.fullName || 'Anonymous'}</div>
-                <div class="comment-body">${comment.body}</div>
+            <div class="comment-user">${comment.user?.fullName || 'Anonymous'}</div>
+            <div class="comment-body">${comment.body}</div>
             `;
             commentsList.appendChild(commentItem);
         });
@@ -129,9 +117,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             const commentItem = document.createElement('li');
             commentItem.classList.add('comment');
             commentItem.innerHTML = `
-                <div class="comment-user">${user ? `${user.firstName} ${user.lastName}` : comment.user?.username || 'Anonymous'}</div>
-                <div class="comment-body">${comment.body}</div>
+            <div class="comment-user">${user ? `${user.firstName} ${user.lastName}` : comment.user?.username || 'Anonymous'}</div>
+            <div class="comment-body">${comment.body}</div>
             `;
+            // fixa comment-user ^
             commentsList.appendChild(commentItem);
         });
 
@@ -216,8 +205,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const commentItem = document.createElement('li');
             commentItem.classList.add('comment');
             commentItem.innerHTML = `
-                <div class="comment-user">${selectedUser.firstName} ${selectedUser.lastName}</div>
-                <div class="comment-body">${commentBody}</div>
+            <div class="comment-user">${selectedUser.firstName} ${selectedUser.lastName}</div>
+            <div class="comment-body">${commentBody}</div>
             `;
             commentsList.appendChild(commentItem);
 

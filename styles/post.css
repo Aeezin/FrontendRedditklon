@@ -68,7 +68,8 @@
   transform: translateX(5px);
 }
 
-.post div, small {
+.post div,
+small {
   flex-grow: 1;
   color: orange;
   line-height: 1.6;
@@ -151,4 +152,19 @@
     grid-template-columns: 1fr;
     transition: all 0.3s ease;
   }
+}
+
+/* Scrollbar Track (background) */
+::-webkit-scrollbar {
+  width: .4rem;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(to bottom, black, rgb(10, 10, 10));
+}
+
+/* Scrollbar Thumb (foreground) */
+::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  border: 3px solid orange;
 }

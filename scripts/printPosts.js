@@ -4,8 +4,6 @@ function printPosts() {
     const posts = JSON.parse(localStorage.getItem('posts')) || [];
     const users = JSON.parse(localStorage.getItem('users')) || [];
 
-    // console.log('Loading posts from localStorage:', localStorage.getItem('posts')); // Debugging
-
     if (!Array.isArray(posts) || posts.length === 0) {
         postsContainer.innerHTML = '<div>No posts found.</div>';
         return;
@@ -18,7 +16,7 @@ function printPosts() {
         const postElement = document.createElement('div');
         postElement.classList.add('post');
 
-        const user = users.find(user => user.id === post.id || user.id === post.userId);
+        const user = users.find(user => user.id === post.userId);
 
         const username = user ? `${user.firstName} ${user.lastName}` : 'Unknown User';
         const tags = post.tags && post.tags.length > 0 ? post.tags.join(', ') : '';

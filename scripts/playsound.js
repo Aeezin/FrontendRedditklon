@@ -1,4 +1,4 @@
-function playSound(sound) {
+export function playSound(sound) {
     const audio = document.getElementById("submit-audio");
     const playButton = document.getElementById("submit");
 
