@@ -231,6 +231,7 @@
     max-width: 38rem;
     position: relative;
     border: 1px solid rgba(255, 165, 0, 0.1);
+    overflow-wrap: break-word;
 }
 
 #post-preview::after {
@@ -263,6 +264,7 @@
     margin-bottom: 1.5rem;
     position: relative;
     display: inline-block;
+    max-width: 38rem;
 }
 
 #preview-body {
@@ -270,6 +272,7 @@
     margin-bottom: 1.5rem;
     line-height: 1.6;
     opacity: 0.9;
+    max-width: 38rem;
 }
 
 #preview-user {

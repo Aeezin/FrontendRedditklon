@@ -17,17 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             let users = JSON.parse(localStorage.getItem('users'));
 
-            if (!Array.isArray(users) || users.length === 0) {
-                const response = await fetch('https://dummyjson.com/users');
-                if (!response.ok) throw new Error('Failed to fetch users');
-
-                const data = await response.json();
-                users = data.users;
-                localStorage.setItem('users', JSON.stringify(users));
-            }
-
             userSelect.innerHTML = '<option value="">Select a user</option>';
-
             users.forEach(user => {
                 const option = document.createElement('option');
                 option.value = user.id;
@@ -148,9 +138,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
             posts.unshift(newPost);
             localStorage.setItem('posts', JSON.stringify(posts));
-            console.log('New post:', newPost);
-            console.log('Posts:', posts);
-
 
             event.target.reset();
             selectedTags = [];

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const postId = params.get('postId');
 
@@ -7,214 +7,145 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // Load stored posts from localStorage
     let posts = JSON.parse(localStorage.getItem('posts')) || [];
     let postData = posts.find(post => post.id == postId);
 
-    function getPostReactions(postId) {
-        const reactions = JSON.parse(localStorage.getItem('postReactions') || '{}');
-        if (!reactions[postId]) {
-            reactions[postId] = {
-                likes: 0,
-                dislikes: 0,
-                userReaction: null,
-                comments: []
-            };
-            localStorage.setItem('postReactions', JSON.stringify(reactions));
-        }
-        return reactions[postId];
+    if (!postData) {
+        document.getElementById('comments-container').innerHTML = '<div>Post not found.</div>';
+        return;
     }
 
-    function savePostReactions(postId, postReactions) {
-        const allReactions = JSON.parse(localStorage.getItem('postReactions') || '{}');
-        allReactions[postId] = postReactions;
-        localStorage.setItem('postReactions', JSON.stringify(allReactions));
+    if (!postData.reactions) {
+        postData.reactions = { likes: 0, dislikes: 0, userReaction: null };
     }
 
-    try {
-        // Display post data
-        document.getElementById('post-title').textContent = postData.title || `Post #${postId}`;
-        document.getElementById('post-content').textContent = postData.body;
-        document.getElementById('post-tags').textContent = `Tags: ${(postData.tags || []).join(', ')}`;
+    if (!postData.comments) {
+        postData.comments = [];
+    }
 
-        // Initialize reactions
-        const postReactions = getPostReactions(postId);
-
-        // Only initialize from API if no local reactions exist
-        if (postReactions.likes === 0 && postReactions.dislikes === 0) {
-            if (postData.reactions && typeof postData.reactions === 'object') {
-                postReactions.likes = postData.reactions.likes || 0;
-                postReactions.dislikes = postData.reactions.dislikes || 0;
-            }
-            // For new user-created posts, keep at 0
-            savePostReactions(postId, postReactions);
+    function savePosts(updatedPost) {
+        let postIndex = posts.findIndex(post => post.id == updatedPost.id);
+        if (postIndex !== -1) {
+            posts[postIndex] = updatedPost;
+            localStorage.setItem('posts', JSON.stringify(posts));
+        } else {
+            console.error('Could not find post to update');
         }
+    }
 
-        // Fetch comments from API only if needed
-        let apiComments = [];
-        try {
-            const commentsResponse = await fetch(`https://dummyjson.com/comments/post/${postId}`);
-            if (commentsResponse.ok) {
-                const commentsData = await commentsResponse.json();
-                apiComments = commentsData.comments || [];
-            }
-        } catch (error) {
-            console.warn('Failed to fetch comments from API:', error);
-        }
+    document.getElementById('post-title').textContent = postData.title;
+    document.getElementById('post-content').textContent = postData.body;
+    document.getElementById('post-tags').textContent = `Tags: ${(postData.tags || []).join(', ')}`;
 
-        // Fetch users for comment dropdown
-        let users = [];
-        try {
-            const usersResponse = await fetch('https://dummyjson.com/users?limit=0&select=firstName,lastName');
-            if (usersResponse.ok) {
-                const usersData = await usersResponse.json();
-                users = usersData.users || [];
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    const userSelect = document.getElementById('comment-user');
+    userSelect.innerHTML = '<option value="">Select a user</option>';
 
-                // Store users in localStorage for preserving comment user info
-                localStorage.setItem('users', JSON.stringify(users));
+    users.forEach(user => {
+        let option = document.createElement('option');
+        option.value = user.id;
+        option.textContent = `${user.firstName} ${user.lastName}`;
+        userSelect.appendChild(option);
+    });
 
-                // Populate user dropdown
-                const userSelect = document.getElementById('comment-user');
-                userSelect.innerHTML = '<option value="">Select a user...</option>';
-                users.forEach(user => {
-                    const option = document.createElement('option');
-                    option.value = user.id;
-                    option.textContent = `${user.firstName} ${user.lastName}`;
-                    userSelect.appendChild(option);
-                });
-            }
-        } catch (error) {
-            console.warn('Failed to fetch users from API:', error);
-            // Try to load users from localStorage if API fails
-            const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-            users = storedUsers;
-        }
+    let allComments = JSON.parse(localStorage.getItem('comments')) || [];
+    let postComments = allComments.filter(comment => comment.postId == postId);
 
-        // Display all comments
-        const commentsList = document.getElementById('comments-list');
-        commentsList.innerHTML = '';
+    const commentsList = document.getElementById('comments-list');
+    commentsList.innerHTML = '';
 
-        // Function to get user info from localStorage
-        function getUserInfo(userId) {
-            const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-            return storedUsers.find(user => user.id == userId);
-        }
-
-        // Display API comments
-        apiComments.forEach(comment => {
-            const commentItem = document.createElement('li');
-            commentItem.classList.add('comment');
-            commentItem.innerHTML = `
-            <div class="comment-user">${comment.user?.fullName || 'Anonymous'}</div>
-            <div class="comment-body">${comment.body}</div>
+    [...postComments, ...postData.comments].forEach(comment => {
+        const user = users.find(user => user.id == comment.user.id);
+        const commentItem = document.createElement('li');
+        commentItem.classList.add('comment');
+        commentItem.innerHTML = `
+                <div class="comment-user">${user ? `${user.firstName} ${user.lastName}` : 'Anonymous'}</div>
+                <div class="comment-body">${comment.body}</div>
             `;
-            commentsList.appendChild(commentItem);
-        });
+        commentsList.appendChild(commentItem);
+    });
 
-        // Display local comments with proper user info
-        postReactions.comments.forEach(comment => {
-            const user = getUserInfo(comment.userId);
-            const commentItem = document.createElement('li');
-            commentItem.classList.add('comment');
-            commentItem.innerHTML = `
-            <div class="comment-user">${user ? `${user.firstName} ${user.lastName}` : comment.user?.username || 'Anonymous'}</div>
-            <div class="comment-body">${comment.body}</div>
-            `;
-            // fixa comment-user ^
-            commentsList.appendChild(commentItem);
-        });
+    document.getElementById('likes-count').textContent = postData.reactions.likes;
+    document.getElementById('dislikes-count').textContent = postData.reactions.dislikes;
 
-        // Update reaction counts
-        document.getElementById('likes-count').textContent = postReactions.likes;
-        document.getElementById('dislikes-count').textContent = postReactions.dislikes;
+    const likeBtn = document.getElementById('like-btn');
+    const dislikeBtn = document.getElementById('dislike-btn');
 
-        // Handle reactions
-        const likeBtn = document.getElementById('like-btn');
-        const dislikeBtn = document.getElementById('dislike-btn');
+    if (postData.reactions.userReaction === 'like') likeBtn.classList.add('active');
+    if (postData.reactions.userReaction === 'dislike') dislikeBtn.classList.add('active');
 
-        // Set initial button states
-        if (postReactions.userReaction === 'like') {
-            likeBtn.classList.add('active');
-        } else if (postReactions.userReaction === 'dislike') {
-            dislikeBtn.classList.add('active');
-        }
-
-        likeBtn.addEventListener('click', () => {
-            const isLiked = postReactions.userReaction === 'like';
-            if (!isLiked) {
-                postReactions.likes++;
-                if (postReactions.userReaction === 'dislike') {
-                    postReactions.dislikes--;
-                    dislikeBtn.classList.remove('active');
-                }
-                postReactions.userReaction = 'like';
-                likeBtn.classList.add('active');
-            } else {
-                postReactions.likes--;
-                postReactions.userReaction = null;
-                likeBtn.classList.remove('active');
-            }
-            document.getElementById('likes-count').textContent = postReactions.likes;
-            document.getElementById('dislikes-count').textContent = postReactions.dislikes;
-            savePostReactions(postId, postReactions);
-        });
-
-        dislikeBtn.addEventListener('click', () => {
-            const isDisliked = postReactions.userReaction === 'dislike';
-            if (!isDisliked) {
-                postReactions.dislikes++;
-                if (postReactions.userReaction === 'like') {
-                    postReactions.likes--;
-                    likeBtn.classList.remove('active');
-                }
-                postReactions.userReaction = 'dislike';
-                dislikeBtn.classList.add('active');
-            } else {
-                postReactions.dislikes--;
-                postReactions.userReaction = null;
+    likeBtn.addEventListener('click', () => {
+        if (postData.reactions.userReaction !== 'like') {
+            postData.reactions.likes++;
+            if (postData.reactions.userReaction === 'dislike') {
+                postData.reactions.dislikes--;
                 dislikeBtn.classList.remove('active');
             }
-            document.getElementById('likes-count').textContent = postReactions.likes;
-            document.getElementById('dislikes-count').textContent = postReactions.dislikes;
-            savePostReactions(postId, postReactions);
-        });
+            postData.reactions.userReaction = 'like';
+            likeBtn.classList.add('active');
+        } else {
+            postData.reactions.likes--;
+            postData.reactions.userReaction = null;
+            likeBtn.classList.remove('active');
+        }
+        document.getElementById('likes-count').textContent = postData.reactions.likes;
+        document.getElementById('dislikes-count').textContent = postData.reactions.dislikes;
+        savePosts(postData);
+    });
 
-        // Handle new comments
-        const submitCommentBtn = document.getElementById('submit-comment');
-        submitCommentBtn.addEventListener('click', () => {
-            const userId = document.getElementById('comment-user').value;
-            const commentBody = document.getElementById('new-comment').value.trim();
-
-            if (!userId || !commentBody) {
-                alert('Please select a user and enter a comment.');
-                return;
+    dislikeBtn.addEventListener('click', () => {
+        if (postData.reactions.userReaction !== 'dislike') {
+            postData.reactions.dislikes++;
+            if (postData.reactions.userReaction === 'like') {
+                postData.reactions.likes--;
+                likeBtn.classList.remove('active');
             }
+            postData.reactions.userReaction = 'dislike';
+            dislikeBtn.classList.add('active');
+        } else {
+            postData.reactions.dislikes--;
+            postData.reactions.userReaction = null;
+            dislikeBtn.classList.remove('active');
+        }
+        document.getElementById('likes-count').textContent = postData.reactions.likes;
+        document.getElementById('dislikes-count').textContent = postData.reactions.dislikes;
+        savePosts(postData);
+    });
 
-            const selectedUser = users.find(user => user.id == userId);
-            const newComment = {
-                userId: userId, // Store the userId for persistence
-                user: {
-                    username: `${selectedUser.firstName} ${selectedUser.lastName}`
-                },
-                body: commentBody
-            };
+    document.getElementById('submit-comment').addEventListener('click', () => {
+        const userId = userSelect.value;
+        const commentBody = document.getElementById('new-comment').value.trim();
 
-            postReactions.comments.push(newComment);
-            savePostReactions(postId, postReactions);
+        if (!userId || !commentBody) {
+            alert('Please select a user and enter a comment.');
+            return;
+        }
 
-            const commentItem = document.createElement('li');
-            commentItem.classList.add('comment');
-            commentItem.innerHTML = `
+        const commentLenght = JSON.parse(localStorage.getItem('comments')) || [];
+        const selectedUser = users.find(user => user.id == userId);
+        const newComment = {
+            id: commentLenght.length + 1,
+            body: commentBody,
+            postId,
+            user: { id: selectedUser.id, username: selectedUser.username, fullName: selectedUser.firstName + ' ' + selectedUser.lastName },
+        };
+
+        postData.comments.push(newComment);
+        savePosts(postData);
+
+        let allComments = JSON.parse(localStorage.getItem('comments')) || [];
+        allComments.push(newComment);
+        localStorage.setItem('comments', JSON.stringify(allComments));
+
+        const commentItem = document.createElement('li');
+        commentItem.classList.add('comment');
+        commentItem.innerHTML = `
             <div class="comment-user">${selectedUser.firstName} ${selectedUser.lastName}</div>
             <div class="comment-body">${commentBody}</div>
-            `;
-            commentsList.appendChild(commentItem);
+        `;
+        commentsList.appendChild(commentItem);
 
-            document.getElementById('comment-user').selectedIndex = 0;
-            document.getElementById('new-comment').value = '';
-        });
-
-    } catch (error) {
-        document.getElementById('comments-container').innerHTML = `<div>Error loading post: ${error.message}</div>`;
-    }
+        userSelect.selectedIndex = 0;
+        document.getElementById('new-comment').value = '';
+    });
 });
